@@ -1,27 +1,49 @@
 import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
-import { Table, TableBody, TableCell, TableHead, TableRow, Paper, Avatar, TableContainer } from "@material-ui/core";
+import { Table, TableBody, TableCell, TableHead, TableRow, Paper, Avatar, TableContainer, Button } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
+import Pagination from '@material-ui/lab/Pagination';
 import { VehicleContext } from "../../context/VehicleContext";
+import EditVehicleModal from "../EditModal/EditVehicleModal";
 import "./VehiclesTable.css";
 import Toast from '../Toast';
+import { useLocation } from 'react-router-dom';
+
 
 const VehiclesTable = () => {
     const { vehicles, setVehicles, loading, setLoading } = useContext(VehicleContext);
     const [error, setError] = useState();
 
+    
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [selectedVehicle, setSelectedVehicle] = useState(null);
+    
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const initialPage = searchParams.get('page') || 1;
+    const [page, setPage] = useState(initialPage);
+
+
+    const handleEditClick = (vehicle) => {
+        setSelectedVehicle(vehicle);
+        setIsEditModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsEditModalOpen(false);
+        setSelectedVehicle(null);
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
             try {
-                const response = await axios.get("http://localhost:3000/vehicless");
-                
-                console.log(response.data)
+                const response = await axios.get(`http://localhost:3000/vehicles?page=${page}`);
+                console.log(response)
                 setVehicles(response.data);
-                
             } catch (error) {
                 console.error("Failed to fetch vehicles", error);
-                setError("Failed to fetch vehicles. Please try again later."); // You'll need to add a useState for this error message.
+                setError("We're sorry, something went wrong on our end. Please try again later or contact our support team"); // You'll need to add a useState for this error message.
             }
             setLoading(false);
         };
@@ -43,8 +65,9 @@ const VehiclesTable = () => {
                 setLoading(false);  // Ensure loading state is set to false even on error
             }
         } */;
+    
         fetchData();
-    }, [setVehicles, setLoading]);
+    }, [setVehicles, setLoading, page]);
 
     return (
         <div className="flexContainer">
@@ -91,14 +114,31 @@ const VehiclesTable = () => {
                                                 <TableCell className="truncate">{vehicle.year}</TableCell>
                                                 <TableCell className="truncate">{vehicle.make}</TableCell>
                                                 <TableCell className="truncate">{vehicle.model}</TableCell>
+                                                <TableCell>
+                                                    <Button
+                                                        variant="contained"
+                                                        color="primary"
+                                                        onClick={() => handleEditClick(vehicle)}
+                                                    >
+                                                        Edit
+                                                    </Button>
+                                                </TableCell>
                                             </TableRow>
                                         ))
                                     }
                         </TableBody>
                     </Table>
+                    {selectedVehicle && (
+                        <EditVehicleModal
+                            isOpen={isEditModalOpen}
+                            onClose={handleCloseModal}
+                            vehicleData={selectedVehicle}
+                        />
+                    )}
                 </TableContainer>
                 <Toast open={!!error} message={error} onClose={() => setError('')} />
             </Paper>
+            <Pagination count={10} page={page} onChange={(event, value) => setPage(value)} />
         </div>
     );
 };
