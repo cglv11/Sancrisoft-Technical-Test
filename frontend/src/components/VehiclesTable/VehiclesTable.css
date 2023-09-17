@@ -1,0 +1,25 @@
+
+.flexContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* Stack children vertically */
+    height: 100%; /* or adjust as required */
+}
+
+.parentContainer {
+    justify-content: center;
+    align-items: center;
+    height: 100vh; 
+}
+
+.TableContainer {
+    overflow-x: auto;
+}
+
+.tablePaper {
+    margin-top: 20px; /* Adjust as needed */
+    padding-top: 20px;
+    width: 70%; /* To ensure table takes full width of its container */
+    max-width: 1280px; /* or whatever maximum width you desire */
+}
