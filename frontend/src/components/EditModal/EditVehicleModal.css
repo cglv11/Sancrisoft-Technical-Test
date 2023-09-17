@@ -1,3 +1,45 @@
 .modalContent {
-    /* Styling for the modal content */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 500px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+h2 {
+    margin: 0 0 20px 0;
+}
+
+/* Custom styling for the TextField components */
+.MuiFormControl-root {
+    width: 100%;
+}
+
+/* Style for the button */
+.MuiButton-root {
+    align-self: flex-end;
+    margin-top: 20px;
+}
+
+.fieldsRow {
+    display: flex;
+    gap: 10px;
+}
+
+.yearField, .makeField {
+    flex: 1;
+}
+
+.buttonsRow {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
 }

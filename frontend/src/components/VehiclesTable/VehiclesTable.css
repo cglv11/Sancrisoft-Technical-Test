@@ -20,6 +20,6 @@
 .tablePaper {
     margin-top: 20px; /* Adjust as needed */
     padding-top: 20px;
-    width: 70%; /* To ensure table takes full width of its container */
+    width: 90%; /* To ensure table takes full width of its container */
     max-width: 1280px; /* or whatever maximum width you desire */
 }
