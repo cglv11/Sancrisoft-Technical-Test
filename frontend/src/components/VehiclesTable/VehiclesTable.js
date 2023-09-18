@@ -18,11 +18,13 @@ const VehiclesTable = () => {
     
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedVehicle, setSelectedVehicle] = useState(null);
-    
+    const rowsPerPage = 10;
+
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const initialPage = searchParams.get('page') || 1;
     const [page, setPage] = useState(initialPage);
+    const [totalPages, setTotalPages] = useState(0);
 
 
     const handleEditClick = (vehicle) => {
@@ -41,11 +43,14 @@ const VehiclesTable = () => {
             try {
                 const response = await axios.get(`http://localhost:3000/vehicles?page=${page}`);
                 
-                console.log(response)
-                setVehicles(response.data);
+                const totalCount = response.data.totalCount;
+                const totalPages = Math.ceil(totalCount / rowsPerPage); // assuming you have a rowsPerPage variable
+    
+                setTotalPages(totalPages); // assuming you have a state variable for totalPages
+                setVehicles(response.data.vehicles);
             } catch (error) {
                 console.error("Failed to fetch vehicles", error);
-                setError("We're sorry, something went wrong on our end. Please try again later or contact our support team"); // You'll need to add a useState for this error message.
+                setError("We're sorry, something went wrong on our end. Please try again later or contact our support team");
             }
             setLoading(false);
         };
@@ -98,44 +103,47 @@ const VehiclesTable = () => {
                                     <TableCell colSpan={6}>No vehicles found.</TableCell>
                                 </TableRow>
                             ) : (
-                                vehicles.map(vehicle => (
-                                    <TableRow key={vehicle.id}>
-                                        <TableCell className="truncate">
-                                        {
-                                            loading 
-                                            ?
-                                            (
-                                                <Skeleton variant="rect" width={210} height={118} />
-                                                ) 
-                                                : 
+                                <>
+                                    {vehicles.map(vehicle => (
+                                        <TableRow key={vehicle.id}>
+                                            <TableCell className="truncate">
+                                            {
+                                                loading 
+                                                ?
                                                 (
-                                                    <Avatar 
-                                                        className="squareAvatar"
-                                                        alt={`${vehicle.make} ${vehicle.model}`}
-                                                        src={`https://loremflickr.com/320/240/${vehicle.year},${vehicle.make},${vehicle.model}/all`}
-                                                        onError={(e) => {
-                                                                e.target.onerror = null; 
-                                                                e.target.src=`https://via.placeholder.com/320x240?text=${vehicle.make}+${vehicle.model}`
-                                                            }}
-                                                     />
-                                                )
-                                        }      
-                                        </TableCell>
-                                        <TableCell className="truncate">{vehicle.id}</TableCell>
-                                        <TableCell className="truncate">{vehicle.year}</TableCell>
-                                        <TableCell className="truncate">{vehicle.make}</TableCell>
-                                        <TableCell className="truncate">{vehicle.model}</TableCell>
-                                        <TableCell>
-                                        <IconButton 
-                                            className="editButton" 
-                                            onClick={() => handleEditClick(vehicle)}
-                                            style={{ backgroundColor: '#536C79' }}
-                                        >
-                                            <EditIcon fontSize="medium" style={{ color: '#D9CC26' }} />
-                                        </IconButton>
-                                        </TableCell>
-                                    </TableRow>
-                                ))
+                                                    <Skeleton variant="rect" width={210} height={118} />
+                                                    ) 
+                                                    : 
+                                                    (
+                                                        <Avatar 
+                                                            className="squareAvatar"
+                                                            alt={`${vehicle.make} ${vehicle.model}`}
+                                                            src={`https://loremflickr.com/320/240/${vehicle.year},${vehicle.make},${vehicle.model}/all`}
+                                                            onError={(e) => {
+                                                                    e.target.onerror = null; 
+                                                                    e.target.src=`https://via.placeholder.com/320x240?text=${vehicle.make}+${vehicle.model}`
+                                                                }}
+                                                        />
+                                                    )
+                                            }      
+                                            </TableCell>
+                                            <TableCell className="truncate">{vehicle.id}</TableCell>
+                                            <TableCell className="truncate">{vehicle.year}</TableCell>
+                                            <TableCell className="truncate">{vehicle.make}</TableCell>
+                                            <TableCell className="truncate">{vehicle.model}</TableCell>
+                                            <TableCell>
+                                            <IconButton 
+                                                className="editButton" 
+                                                onClick={() => handleEditClick(vehicle)}
+                                                style={{ backgroundColor: '#536C79' }}
+                                            >
+                                                <EditIcon fontSize="medium" style={{ color: '#D9CC26' }} />
+                                            </IconButton>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+
+                                </>
                             )}
                         </TableBody>
                     </Table>
@@ -151,7 +159,7 @@ const VehiclesTable = () => {
             </Paper>
             <Pagination 
                 className="paginationBorder"
-                count={10} 
+                count={totalPages} 
                 page={page} 
                 onChange={(event, value) => setPage(value)} 
             />

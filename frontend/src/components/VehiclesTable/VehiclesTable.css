@@ -45,5 +45,11 @@
 }
 
 .paginationBorder {
-    border-top: 20px solid #0000;
+    border-top: 20px solid #fefefe00;
+    margin-bottom: 30px;
+}
+
+.customTableContainer {
+    height: 787px; /* Set this to a value that ensures the Pagination doesn't move */
+    overflow-y: auto;
 }
