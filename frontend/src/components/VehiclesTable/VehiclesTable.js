@@ -149,7 +149,12 @@ const VehiclesTable = () => {
                 </TableContainer>
                 <Toast open={!!error} message={error} onClose={() => setError('')} />
             </Paper>
-            <Pagination count={10} page={page} onChange={(event, value) => setPage(value)} />
+            <Pagination 
+                className="paginationBorder"
+                count={10} 
+                page={page} 
+                onChange={(event, value) => setPage(value)} 
+            />
         </div>
     );
 };
