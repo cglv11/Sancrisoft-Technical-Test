@@ -4,8 +4,24 @@ import { VehicleContext } from '../../context/VehicleContext';
 import { CircularProgress } from '@material-ui/core';
 import { Snackbar } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
-
+import { makeStyles } from "@material-ui/core/styles";
 import './EditVehicleModal.css';
+
+const useStyles = makeStyles({
+    underline: {
+      "&&&:before": {
+        borderBottomColor: "#00000"
+      },
+      "&&:after": {
+        borderBottomColor: "#2297C5"
+      }
+    },
+    colorLabel: {     
+        "&.Mui-focused": {
+            color: "#2297C5"
+          }
+    }
+  });
 
 function EditVehicleModal({ isOpen, onClose, vehicleData }) {
     const [vehicle, setVehicle] = useState(vehicleData);
@@ -19,6 +35,7 @@ function EditVehicleModal({ isOpen, onClose, vehicleData }) {
         const { name, value } = e.target;
         setVehicle(prev => ({ ...prev, [name]: value }));
     };
+    const classes = useStyles();
 
     const handleSubmit = async () => {
         setIsLoading(true);
@@ -55,6 +72,9 @@ function EditVehicleModal({ isOpen, onClose, vehicleData }) {
                         value={vehicle.year}
                         onChange={handleInputChange}
                         className="yearField"
+                        variant="filled"
+                        InputProps={ {classes} }
+                        InputLabelProps={{ className: classes.colorLabel }}
                     />
                     <TextField
                         required
@@ -63,6 +83,9 @@ function EditVehicleModal({ isOpen, onClose, vehicleData }) {
                         value={vehicle.make}
                         onChange={handleInputChange}
                         className="makeField"
+                        variant="filled"
+                        InputProps={{ classes }}
+                        InputLabelProps={{ className: classes.colorLabel }}
                     />
                 </div>
                 <TextField
@@ -71,12 +94,20 @@ function EditVehicleModal({ isOpen, onClose, vehicleData }) {
                     name="model"
                     value={vehicle.model}
                     onChange={handleInputChange}
-                    className="modelField"
+                    variant="filled"
+                    InputProps={{ classes }}
+                    InputLabelProps={{ className: classes.colorLabel }}
                 />
                 <div className="buttonsRow">
                     <Button 
-                        onClick={onClose} 
-                        variant="outlined" 
+                        onClick={onClose}
+                        size="large"
+                        variant="outlined"
+                        style={{
+                            backgroundColor: '#536C79',  // Replace with your desired color
+                            color: 'white',  // Text color, you can change it if you want
+                            textTransform: 'none'
+                        }}
                         disabled={isLoading}  // Disable when loading
                     >
                         Cancel
@@ -84,10 +115,15 @@ function EditVehicleModal({ isOpen, onClose, vehicleData }) {
                     <Button 
                         onClick={handleSubmit} 
                         variant="contained" 
-                        color="primary" 
+                        size="large"
+                        style={{
+                            backgroundColor: '#2297C5',  // Replace with your desired color
+                            color: 'white',  // Text color, you can change it if you want
+                            textTransform: 'none'
+                        }}
                         disabled={isLoading}  // Disable when loading
                     >
-                        {isLoading ? <CircularProgress size={24} /> : "Update"}
+                        {isLoading ? <CircularProgress size={24} /> : "Confirm"}
                     </Button>
                 </div>
                 <Snackbar 
@@ -104,5 +140,6 @@ function EditVehicleModal({ isOpen, onClose, vehicleData }) {
         </Modal>
     );
 }
+
 
 export default EditVehicleModal;

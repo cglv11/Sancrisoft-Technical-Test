@@ -12,19 +12,17 @@ import EditIcon from '@material-ui/icons/Edit';
 
 
 const VehiclesTable = () => {
-    const { vehicles, setVehicles, loading, setLoading } = useContext(VehicleContext);
+    const { vehicles, loading, setLoading, totalPages, getVehicles } = useContext(VehicleContext);
     const [error, setError] = useState();
-    // setLoading(true) test for skeleton
+    //setLoading(true)
     
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedVehicle, setSelectedVehicle] = useState(null);
-    const rowsPerPage = 10;
 
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const initialPage = searchParams.get('page') || 1;
     const [page, setPage] = useState(initialPage);
-    const [totalPages, setTotalPages] = useState(0);
 
 
     const handleEditClick = (vehicle) => {
@@ -38,25 +36,8 @@ const VehiclesTable = () => {
     };
 
     useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
-            try {
-                const response = await axios.get(`http://localhost:3000/vehicles?page=${page}`);
-                
-                const totalCount = response.data.totalCount;
-                const totalPages = Math.ceil(totalCount / rowsPerPage); // assuming you have a rowsPerPage variable
-    
-                setTotalPages(totalPages); // assuming you have a state variable for totalPages
-                setVehicles(response.data.vehicles);
-            } catch (error) {
-                console.error("Failed to fetch vehicles", error);
-                setError("We're sorry, something went wrong on our end. Please try again later or contact our support team");
-            }
-            setLoading(false);
-        };
-    
-        fetchData();
-    }, [setVehicles, setLoading, page]);
+        getVehicles(page);
+    }, [page]);
 
     return (
         <div className="flexContainer">
@@ -137,7 +118,7 @@ const VehiclesTable = () => {
                                                 onClick={() => handleEditClick(vehicle)}
                                                 style={{ backgroundColor: '#536C79' }}
                                             >
-                                                <EditIcon fontSize="medium" style={{ color: '#D9CC26' }} />
+                                                <EditIcon fontSize="medium" style={{ color: 'white' }} />
                                             </IconButton>
                                             </TableCell>
                                         </TableRow>

@@ -5,7 +5,11 @@ export const VehicleContext = createContext();
 
 export const VehicleProvider = ({ children }) => {
     const [vehicles, setVehicles] = useState([]);
+    const [totalPages, setTotalPages] = useState(0);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    const rowsPerPage = 10;
 
     const updateVehicle = async (vehicleData) => {
         try {
@@ -26,8 +30,25 @@ export const VehicleProvider = ({ children }) => {
         }
     }
 
+    const getVehicles = async (page) => {
+        setLoading(true);
+        try {
+            const response = await axios.get(`http://localhost:3000/vehicles?page=${page}`);
+            
+            const totalCount = response.data.totalCount;
+            const totalPages = Math.ceil(totalCount / rowsPerPage);
+    
+            setTotalPages(totalPages);
+            setVehicles(response.data.vehicles);
+        } catch (error) {
+            console.error("Failed to fetch vehicles", error);
+            setError("We're sorry, something went wrong on our end. Please try again later or contact our support team");
+        }
+        setLoading(false);
+    }
+
     return (
-        <VehicleContext.Provider value={{ vehicles, setVehicles, loading, setLoading, updateVehicle }}>
+        <VehicleContext.Provider value={{ vehicles, setVehicles, loading, setLoading, updateVehicle, getVehicles, totalPages }}>
             {children}
         </VehicleContext.Provider>
     );

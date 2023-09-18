@@ -7,7 +7,7 @@
     max-width: 500px;
     padding: 20px;
     background-color: white;
-    border-radius: 8px;
+    border-radius: 4px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
     display: flex;
     flex-direction: column;
@@ -32,6 +32,8 @@ h2 {
 .fieldsRow {
     display: flex;
     gap: 10px;
+    margin-bottom: 10px;
+    margin-top: 20px;
 }
 
 .yearField, .makeField {
@@ -39,7 +41,20 @@ h2 {
 }
 
 .buttonsRow {
+    margin-top: 20px;
     display: flex;
     justify-content: flex-end;
     gap: 10px;
+}
+
+.custom-textfield .MuiInput-underline:before {
+    border-bottom: 1px solid #000000; /* Change to your default color */
+}
+
+.custom-textfield .MuiInput-underline:hover:not(.Mui-disabled):before {
+    border-bottom: 2px solid #2297C5; /* Change to your desired hover color */
+}
+
+.custom-textfield .MuiInput-underline:after {
+    border-bottom: 2px solid #E57373; /* Change to your focus color */
 }
