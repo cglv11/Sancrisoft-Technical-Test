@@ -27,20 +27,21 @@ const getAllVehicles = (req, reply) => {
 };
 
 const addVehicle = (req, reply) => {
-    const { city_mpg, class: vehicleClass, combination_mpg, cylinders, displacement, drive, fuel_type, highway_mpg, make, model, transmission, year } = req.body;
+    const { city_mpg, class: vehicleClass, combination_mpg, cylinders, displacement, drive, fuel_type, highway_mpg, make, model, transmission, year, location } = req.body;
     
     const sql = `
-        INSERT INTO vehicles (city_mpg, class, combination_mpg, cylinders, displacement, drive, fuel_type, highway_mpg, make, model, transmission, year) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO vehicles (city_mpg, "class", combination_mpg, cylinders, displacement, drive, fuel_type, highway_mpg, make, model, transmission, year, location) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
-    db.run(sql, [city_mpg, vehicleClass, combination_mpg, cylinders, displacement, drive, fuel_type, highway_mpg, make, model, transmission, year], function(err) {
+    db.run(sql, [city_mpg, vehicleClass, combination_mpg, cylinders, displacement, drive, fuel_type, highway_mpg, make, model, transmission, year, location], function(err) {
         if (err) {
             return console.error(err.message);
         }
         reply.send({ message: "New vehicle added", id: this.lastID });
     });
 };
+
 
 const updateVehicle = (req, reply) => {
     const vehicleId = req.params.vehicleId;
@@ -73,8 +74,24 @@ const updateVehicle = (req, reply) => {
     });
 };
 
+const deleteVehicle = (req, reply) => {
+    const vehicleId = req.params.vehicleId;
+
+    const sql = `DELETE FROM vehicles WHERE id = ?`;
+
+    db.run(sql, [vehicleId], function(err) {
+        if (err) {
+            console.error(err.message);
+            reply.status(500).send({ error: "Failed to delete vehicle" });
+        } else {
+            reply.send({ message: "Vehicle deleted successfully", id: vehicleId });
+        }
+    });
+};
+
 module.exports = {
     getAllVehicles,
     addVehicle,
-    updateVehicle
+    updateVehicle,
+    deleteVehicle
 };

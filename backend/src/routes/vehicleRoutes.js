@@ -15,6 +15,11 @@ const routes = [
         method: 'PUT',
         url: '/vehicles/:vehicleId',
         handler: vehicleController.updateVehicle
+    },
+    {
+        method: 'DELETE',
+        url: '/vehicles/:vehicleId',
+        handler: vehicleController.deleteVehicle
     }
 ]
 
