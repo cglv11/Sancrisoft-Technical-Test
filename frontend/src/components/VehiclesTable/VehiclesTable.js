@@ -8,20 +8,23 @@ import EditVehicleModal from "../EditModal/EditVehicleModal";
 import "./VehiclesTable.css";
 import Toast from '../Toast';
 import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import EditIcon from '@material-ui/icons/Edit';
-
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const VehiclesTable = () => {
-    const { vehicles, loading, setLoading, totalPages, getVehicles } = useContext(VehicleContext);
+    const { vehicles, loading, setLoading, totalPages, getVehicles, deleteVehicle } = useContext(VehicleContext);
     const [error, setError] = useState();
     //setLoading(true)
     
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedVehicle, setSelectedVehicle] = useState(null);
 
+    const history = useNavigate();
     const location = useLocation();
+    
     const searchParams = new URLSearchParams(location.search);
-    const initialPage = searchParams.get('page') || 1;
+    const initialPage = Number(searchParams.get('page')) || 1;
     const [page, setPage] = useState(initialPage);
 
 
@@ -35,6 +38,28 @@ const VehiclesTable = () => {
         setSelectedVehicle(null);
     };
 
+    const handleDeleteClick = async (vehicleId) => {
+        const success = await deleteVehicle(vehicleId);
+        if (success) {
+            getVehicles(page);
+            setError('Vehicle deleted successfully!');  // This seems counter-intuitive. Maybe rename setError to setNotification or something similar?
+        } else {
+            setError("We're sorry, something went wrong on our end. Please try again later or contact our support team");
+        }
+    };
+
+    const handlePageChange = (event, value) => {
+        setPage(value);
+        history(`/vehicles?page=${value}`);  // Update URL with the new page number
+    };
+
+    useEffect(() => {
+        const currentPage = Number(searchParams.get('page')) || 1;
+        if (currentPage !== page) {
+            setPage(currentPage);
+        }
+    }, [location.search]);
+    
     useEffect(() => {
         getVehicles(page);
     }, [page]);
@@ -51,6 +76,7 @@ const VehiclesTable = () => {
                                 <TableCell className="truncate">Year</TableCell>
                                 <TableCell className="truncate">Make</TableCell>
                                 <TableCell className="truncate">Model</TableCell>
+                                <TableCell className="truncate">Location</TableCell>
                                 {/* Add more table cells if needed */}
                             </TableRow>
                         </TableHead>
@@ -73,6 +99,12 @@ const VehiclesTable = () => {
                                         </TableCell>
                                         <TableCell className="truncate">
                                             <Skeleton variant="text" width={80} />
+                                        </TableCell>
+                                        <TableCell className="truncate">
+                                            <Skeleton variant="text" width={80} />
+                                        </TableCell>
+                                        <TableCell className="truncate">
+                                            <Skeleton variant="circle" width={40} height={40} />
                                         </TableCell>
                                         <TableCell className="truncate">
                                             <Skeleton variant="circle" width={40} height={40} />
@@ -112,14 +144,22 @@ const VehiclesTable = () => {
                                             <TableCell className="truncate">{vehicle.year}</TableCell>
                                             <TableCell className="truncate">{vehicle.make}</TableCell>
                                             <TableCell className="truncate">{vehicle.model}</TableCell>
-                                            <TableCell>
-                                            <IconButton 
-                                                className="editButton" 
-                                                onClick={() => handleEditClick(vehicle)}
-                                                style={{ backgroundColor: '#536C79' }}
-                                            >
-                                                <EditIcon fontSize="medium" style={{ color: 'white' }} />
-                                            </IconButton>
+                                            <TableCell className="truncate">{vehicle.location}</TableCell>
+                                            <TableCell style={{ textAlign: 'center'}}>
+                                                <IconButton 
+                                                    className="editButton" 
+                                                    onClick={() => handleEditClick(vehicle)}
+                                                    style={{ backgroundColor: '#536C79', marginRight: '5%' }}
+                                                >
+                                                    <EditIcon fontSize="medium" style={{ color: 'white'}} />
+                                                </IconButton>
+                                                <IconButton 
+                                                    className="deleteButton" 
+                                                    onClick={() => handleDeleteClick(vehicle.id)}
+                                                    style={{ backgroundColor: '#B00020' }}
+                                                >
+                                                    <DeleteIcon fontSize="medium" style={{ color: 'white' }} />
+                                                </IconButton>
                                             </TableCell>
                                         </TableRow>
                                     ))}
@@ -141,8 +181,8 @@ const VehiclesTable = () => {
             <Pagination 
                 className="paginationBorder"
                 count={totalPages} 
-                page={page} 
-                onChange={(event, value) => setPage(value)} 
+                page={Number(page)} 
+                onChange={handlePageChange} 
             />
         </div>
     );

@@ -21,16 +21,22 @@
     margin-top: 20px; /* Adjust as needed */
     padding-top: 20px;
     width: 90%; /* To ensure table takes full width of its container */
-    max-width: 1280px; /* or whatever maximum width you desire */
+    max-width: 1200px; /* or whatever maximum width you desire */
 }
 
 .squareAvatar {
     border-radius: 4px !important;
     width: 90px;  
-    height: 9s0px;
+    height: 90px;
 }
 
 .editButton {
+    width: 40px;
+    height: 40px;
+    padding: 5px;
+    border-radius: 50%;
+}
+.deleteButton {
     width: 40px;
     height: 40px;
     padding: 5px;

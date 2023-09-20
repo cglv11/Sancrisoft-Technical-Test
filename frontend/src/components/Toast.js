@@ -15,7 +15,7 @@ const Toast = ({ open, message, onClose }) => (
     >
         <SnackbarContent 
             message={message} 
-            style={{ marginTop: 30 }} 
+            style={{ marginTop: 70 }} 
         />
     </Snackbar>
 );

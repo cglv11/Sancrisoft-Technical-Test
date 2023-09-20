@@ -88,16 +88,31 @@ function EditVehicleModal({ isOpen, onClose, vehicleData }) {
                         InputLabelProps={{ className: classes.colorLabel }}
                     />
                 </div>
-                <TextField
-                    required
-                    label="Model"
-                    name="model"
-                    value={vehicle.model}
-                    onChange={handleInputChange}
-                    variant="filled"
-                    InputProps={{ classes }}
-                    InputLabelProps={{ className: classes.colorLabel }}
-                />
+                <div className="fieldsRow">
+                    <TextField
+                        required
+                        label="Model"
+                        name="model"
+                        value={vehicle.model}
+                        onChange={handleInputChange}
+                        className="makeField"
+                        variant="filled"
+                        InputProps={{ classes }}
+                        InputLabelProps={{ className: classes.colorLabel }}
+                    />
+                    <TextField
+                        required
+                        label="Location"
+                        name="location"
+                        value={vehicle.location}
+                        onChange={handleInputChange}
+                        className="makeField"
+                        variant="filled"
+                        InputProps={{ classes }}
+                        InputLabelProps={{ className: classes.colorLabel }}
+                    />
+
+                </div>
                 <div className="buttonsRow">
                     <Button 
                         onClick={onClose}

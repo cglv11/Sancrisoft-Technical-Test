@@ -47,8 +47,24 @@ export const VehicleProvider = ({ children }) => {
         setLoading(false);
     }
 
+    const deleteVehicle = async (vehicleId) => {
+        try {
+            const response = await axios.delete(`http://localhost:3000/vehicles/${vehicleId}`);
+            if (response.status === 200) {
+
+                return true;
+            } else {
+                console.error('Failed to delete vehicle with id:', vehicleId);
+                return false;
+            }
+        } catch (error) {
+            console.error('Error deleting the vehicle:', error);
+            return false;
+        }
+    };
+
     return (
-        <VehicleContext.Provider value={{ vehicles, setVehicles, loading, setLoading, updateVehicle, getVehicles, totalPages }}>
+        <VehicleContext.Provider value={{ vehicles, setVehicles, loading, setLoading, updateVehicle, getVehicles, totalPages, deleteVehicle }}>
             {children}
         </VehicleContext.Provider>
     );
