@@ -45,7 +45,7 @@ const VehiclesTable = () => {
         const success = await deleteVehicle(vehicleId);
         if (success) {
             getVehicles(page);
-            setError('Vehicle deleted successfully!');  // This seems counter-intuitive. Maybe rename setError to setNotification or something similar?
+            setError('Vehicle deleted successfully!'); 
         } else {
             setError("We're sorry, something went wrong on our end. Please try again later or contact our support team");
         }
@@ -53,7 +53,7 @@ const VehiclesTable = () => {
 
     const handlePageChange = (event, value) => {
         setPage(value);
-        navigate(`/vehicles?page=${value}`);  // Update URL with the new page number
+        navigate(`/vehicles?page=${value}`); 
     };
 
     useEffect(() => {

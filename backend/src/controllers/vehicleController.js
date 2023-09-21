@@ -6,14 +6,12 @@ const getAllVehicles = (req, reply) => {
     const offset = (page - 1) * limit;
     let totalCount;
 
-    // First, get the total count of vehicles
     db.get("SELECT COUNT(*) as count FROM vehicles", [], (err, row) => {
         if (err) {
             throw err;
         }
         totalCount = row.count;
 
-        // Then, get the vehicles for the given page
         db.all("SELECT * FROM vehicles LIMIT ? OFFSET ?", [limit, offset], (err, rows) => {
             if (err) {
                 throw err;

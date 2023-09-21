@@ -1,10 +1,10 @@
 const axios = require('axios');
 const { faker } = require('@faker-js/faker');
-const db = require('./utils/sqlite'); // Assuming the path is correct, modify accordingly
+const db = require('./utils/sqlite'); 
 
 function ensureLocationColumn() {
     return new Promise((resolve, reject) => {
-        db.all("PRAGMA table_info(vehicles);", [], (err, rows) => {  // Changed to `db.all`
+        db.all("PRAGMA table_info(vehicles);", [], (err, rows) => { 
             if (err) {
                 reject(err);
                 return;

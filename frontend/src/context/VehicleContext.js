@@ -17,12 +17,11 @@ export const VehicleProvider = ({ children }) => {
             const response = await axios.put(`http://localhost:3000/vehicles/${vehicleData.id}`, vehicleData);
             if (response.status === 200) {
                 
-                // Find the index of the updated vehicle
                 const index = vehicles.findIndex(v => v.id === vehicleData.id);
                 if (index !== -1) {
                     const newVehicles = [...vehicles];
-                    newVehicles[index] = vehicleData; // Update the vehicle in the array
-                    setVehicles(newVehicles); // Update the state with the new array
+                    newVehicles[index] = vehicleData;
+                    setVehicles(newVehicles); 
                 }
                 setSnackbar({ open: true, message: 'Vehicle updated successfully!', severity: 'success' });
                 return true;

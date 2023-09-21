@@ -18,12 +18,12 @@ h2 {
     margin: 0 0 20px 0;
 }
 
-/* Custom styling for the TextField components */
+
 .MuiFormControl-root {
     width: 100%;
 }
 
-/* Style for the button */
+
 .MuiButton-root {
     align-self: flex-end;
     margin-top: 20px;
@@ -48,13 +48,13 @@ h2 {
 }
 
 .custom-textfield .MuiInput-underline:before {
-    border-bottom: 1px solid #000000; /* Change to your default color */
+    border-bottom: 1px solid #000000;
 }
 
 .custom-textfield .MuiInput-underline:hover:not(.Mui-disabled):before {
-    border-bottom: 2px solid #2297C5; /* Change to your desired hover color */
+    border-bottom: 2px solid #2297C5; 
 }
 
 .custom-textfield .MuiInput-underline:after {
-    border-bottom: 2px solid #E57373; /* Change to your focus color */
+    border-bottom: 2px solid #E57373; 
 }

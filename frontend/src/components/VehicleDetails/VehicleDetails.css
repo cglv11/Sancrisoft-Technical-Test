@@ -24,12 +24,12 @@
 }
 
 .siteTitle {
-    position: absolute; /* makes the title float over the content */
-    top: 10px; /* distance from the top */
-    left: 10px; /* distance from the left */
-    padding: 10px 20px; /* padding inside the title box */
-    font-size: 1.3rem; /* font size of the title */
-    z-index: 1000; /* ensures the title is above other content */
+    position: absolute; 
+    top: 10px; 
+    left: 10px; 
+    padding: 10px 20px; 
+    font-size: 1.3rem;
+    z-index: 1000; 
     font-weight: bold;
     color: #536C79
 }
@@ -37,9 +37,9 @@
 .card-media {
     background-size: cover; 
     background-position: center; 
-    margin: 40px auto 0 auto; /* the first value is the top margin */
+    margin: 40px auto 0 auto; 
     width: 60%; 
-    padding-bottom: 60%; /* maintain 1:1 aspect ratio */
+    padding-bottom: 60%; 
     position: relative;
     border-radius: 8px;
 }
@@ -199,8 +199,8 @@
 
 .displayStack__3 {
     display: flex;
-    flex-direction: column;  /* Makes child elements stack vertically */
-    width: 30%;  /* or any preferred value */
+    flex-direction: column; 
+    width: 30%; 
     align-items: center;
 }
 
@@ -211,5 +211,5 @@
 }
 
 .vehicleInfoTitle {
-    margin-right: 10px; /* Adjust this value to your preference */
+    margin-right: 10px;
 }

@@ -7,9 +7,7 @@ const db = require("./utils/sqlite");
 const vehicleRoutes = require("./routes/vehicleRoutes");
 const vehicleModel = require("./models/vehicle");
 
-fastify.register(cors, { 
-    // put your options here
-})
+fastify.register(cors, {})
 
 // Register Vehicle Routes
 vehicleRoutes.forEach((route) => {
@@ -23,7 +21,7 @@ vehicleModel.createTable();
 function checkAndSeedData() {
     db.get("SELECT COUNT(*) as count FROM vehicles", [], (err, row) => {
         if (err) {
-            throw err;  // Handle this error properly
+            throw err; 
         }
 
         if (row.count === 0) {

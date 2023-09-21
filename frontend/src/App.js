@@ -10,7 +10,7 @@ function App() {
             <VehicleProvider>
                 <Routes>
                     <Route path="/vehicles/:id" element={<VehicleDetails />} />
-                    <Route path="*" element={<VehiclesTable />} /> {/* catch-all route */}
+                    <Route path="*" element={<VehiclesTable />} /> 
                 </Routes>
             </VehicleProvider>
         </Router>

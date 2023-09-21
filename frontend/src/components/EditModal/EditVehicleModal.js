@@ -119,11 +119,11 @@ function EditVehicleModal({ isOpen, onClose, vehicleData }) {
                         size="large"
                         variant="outlined"
                         style={{
-                            backgroundColor: '#536C79',  // Replace with your desired color
-                            color: 'white',  // Text color, you can change it if you want
+                            backgroundColor: '#536C79',  
+                            color: 'white', 
                             textTransform: 'none'
                         }}
-                        disabled={isLoading}  // Disable when loading
+                        disabled={isLoading} 
                     >
                         Cancel
                     </Button>
@@ -132,11 +132,11 @@ function EditVehicleModal({ isOpen, onClose, vehicleData }) {
                         variant="contained" 
                         size="large"
                         style={{
-                            backgroundColor: '#2297C5',  // Replace with your desired color
-                            color: 'white',  // Text color, you can change it if you want
+                            backgroundColor: '#2297C5',  
+                            color: 'white',  
                             textTransform: 'none'
                         }}
-                        disabled={isLoading}  // Disable when loading
+                        disabled={isLoading}  
                     >
                         {isLoading ? <CircularProgress size={24} /> : "Confirm"}
                     </Button>

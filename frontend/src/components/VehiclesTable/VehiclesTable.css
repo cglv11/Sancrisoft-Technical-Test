@@ -3,8 +3,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column; /* Stack children vertically */
-    height: 100%; /* or adjust as required */
+    flex-direction: column;
+    height: 100%;
 }
 
 .parentContainer {
@@ -18,10 +18,10 @@
 }
 
 .tablePaper {
-    margin-top: 20px; /* Adjust as needed */
+    margin-top: 20px;
     padding-top: 20px;
-    width: 90%; /* To ensure table takes full width of its container */
-    max-width: 1200px; /* or whatever maximum width you desire */
+    width: 90%;
+    max-width: 1200px;
 }
 
 .squareAvatar {
@@ -49,7 +49,7 @@
 .paginationContainer {
     display: flex;
     align-items: center;
-    justify-content: flex-start; /* position to the left */
+    justify-content: flex-start; 
     margin-top: 10px;
 }
 
@@ -59,12 +59,12 @@
 }
 
 .customTableContainer {
-    height: 787px; /* Set this to a value that ensures the Pagination doesn't move */
+    height: 787px; 
     overflow-y: auto;
 }
 
 @media (max-width: 768px) {
     .editButton {
-        margin-bottom: 10px !important;  /* Adjust value as needed */
+        margin-bottom: 10px !important;
     }
 }
