@@ -11,16 +11,19 @@ import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { Snackbar } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
+
 
 const VehiclesTable = () => {
-    const { vehicles, loading, setLoading, totalPages, getVehicles, deleteVehicle } = useContext(VehicleContext);
+    const { vehicles, loading, snackbar, setSnackbar, totalPages, getVehicles, deleteVehicle } = useContext(VehicleContext);
     const [error, setError] = useState();
     //setLoading(true)
     
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedVehicle, setSelectedVehicle] = useState(null);
 
-    const history = useNavigate();
+    const navigate = useNavigate();
     const location = useLocation();
     
     const searchParams = new URLSearchParams(location.search);
@@ -50,7 +53,7 @@ const VehiclesTable = () => {
 
     const handlePageChange = (event, value) => {
         setPage(value);
-        history(`/vehicles?page=${value}`);  // Update URL with the new page number
+        navigate(`/vehicles?page=${value}`);  // Update URL with the new page number
     };
 
     useEffect(() => {
@@ -136,6 +139,11 @@ const VehiclesTable = () => {
                                                                     e.target.onerror = null; 
                                                                     e.target.src=`https://via.placeholder.com/320x240?text=${vehicle.make}+${vehicle.model}`
                                                                 }}
+                                                            onClick={() => {
+                                                                navigate(`/vehicles/${vehicle.id}`, {
+                                                                    state: { vehicleDetails: vehicle }
+                                                                });
+                                                            }}
                                                         />
                                                     )
                                             }      
@@ -149,14 +157,12 @@ const VehiclesTable = () => {
                                                 <IconButton 
                                                     className="editButton" 
                                                     onClick={() => handleEditClick(vehicle)}
-                                                    style={{ backgroundColor: '#536C79', marginRight: '5%' }}
                                                 >
                                                     <EditIcon fontSize="medium" style={{ color: 'white'}} />
                                                 </IconButton>
                                                 <IconButton 
                                                     className="deleteButton" 
                                                     onClick={() => handleDeleteClick(vehicle.id)}
-                                                    style={{ backgroundColor: '#B00020' }}
                                                 >
                                                     <DeleteIcon fontSize="medium" style={{ color: 'white' }} />
                                                 </IconButton>
@@ -176,6 +182,11 @@ const VehiclesTable = () => {
                         />
                     )}
                 </TableContainer>
+                <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={() => setSnackbar(prev => ({ ...prev, open: false }))}>
+                    <Alert onClose={() => setSnackbar(prev => ({ ...prev, open: false }))} severity={snackbar.severity}>
+                        {snackbar.message}
+                    </Alert>
+                </Snackbar>
                 <Toast open={!!error} message={error} onClose={() => setError('')} />
             </Paper>
             <Pagination 

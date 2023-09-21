@@ -6,7 +6,7 @@ const Toast = ({ open, message, onClose }) => (
         open={open}
         message={message}
         onClose={onClose}
-        autoHideDuration={4000}
+        autoHideDuration={2000}
         anchorOrigin={{
             vertical: 'center',
             horizontal: 'center',

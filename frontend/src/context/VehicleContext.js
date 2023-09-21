@@ -8,6 +8,7 @@ export const VehicleProvider = ({ children }) => {
     const [totalPages, setTotalPages] = useState(0);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 
     const rowsPerPage = 10;
 
@@ -15,6 +16,7 @@ export const VehicleProvider = ({ children }) => {
         try {
             const response = await axios.put(`http://localhost:3000/vehicles/${vehicleData.id}`, vehicleData);
             if (response.status === 200) {
+                
                 // Find the index of the updated vehicle
                 const index = vehicles.findIndex(v => v.id === vehicleData.id);
                 if (index !== -1) {
@@ -22,9 +24,11 @@ export const VehicleProvider = ({ children }) => {
                     newVehicles[index] = vehicleData; // Update the vehicle in the array
                     setVehicles(newVehicles); // Update the state with the new array
                 }
+                setSnackbar({ open: true, message: 'Vehicle updated successfully!', severity: 'success' });
                 return true;
             }
         } catch (error) {
+            setSnackbar({ open: true, message: 'Error updating vehicle.', severity: 'error' });
             console.error('Failed to update vehicle:', error);
             return false;  // Indicate failure
         }
@@ -64,7 +68,18 @@ export const VehicleProvider = ({ children }) => {
     };
 
     return (
-        <VehicleContext.Provider value={{ vehicles, setVehicles, loading, setLoading, updateVehicle, getVehicles, totalPages, deleteVehicle }}>
+        <VehicleContext.Provider 
+            value={{ 
+                vehicles, 
+                setVehicles, 
+                loading, 
+                setLoading, 
+                updateVehicle, 
+                getVehicles, 
+                totalPages,
+                deleteVehicle,
+                snackbar, setSnackbar
+            }}>
             {children}
         </VehicleContext.Provider>
     );

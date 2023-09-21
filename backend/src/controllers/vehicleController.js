@@ -60,11 +60,12 @@ const updateVehicle = (req, reply) => {
             make = ?, 
             model = ?, 
             transmission = ?, 
-            year = ?
+            year = ?,
+            location = ?
         WHERE id = ?
     `;
 
-    db.run(sql, [vehicleData.city_mpg, vehicleData.class, vehicleData.combination_mpg, vehicleData.cylinders, vehicleData.displacement, vehicleData.drive, vehicleData.fuel_type, vehicleData.highway_mpg, vehicleData.make, vehicleData.model, vehicleData.transmission, vehicleData.year, vehicleId], function(err) {
+    db.run(sql, [vehicleData.city_mpg, vehicleData.class, vehicleData.combination_mpg, vehicleData.cylinders, vehicleData.displacement, vehicleData.drive, vehicleData.fuel_type, vehicleData.highway_mpg, vehicleData.make, vehicleData.model, vehicleData.transmission, vehicleData.year, vehicleData.location, vehicleId], function(err) {
         if (err) {
             console.error(err.message);
             reply.status(500).send({ error: "Failed to update vehicle" });
