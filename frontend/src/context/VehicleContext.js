@@ -26,9 +26,14 @@ export const VehicleProvider = ({ children }) => {
                 setSnackbar({ open: true, message: 'Vehicle updated successfully!', severity: 'success' });
                 return true;
             }
+            
         } catch (error) {
-            setSnackbar({ open: true, message: 'Error updating vehicle.', severity: 'error' });
+            if(error.response.status === 409) {
+                setSnackbar({ open: true, message: error.response.data.error, severity: 'error' });
+                return false;
+            }
             console.error('Failed to update vehicle:', error);
+            setSnackbar({ open: true, message: 'Error updating vehicle.', severity: 'error' });
             return false;  // Indicate failure
         }
     }
@@ -54,7 +59,7 @@ export const VehicleProvider = ({ children }) => {
         try {
             const response = await axios.delete(`http://localhost:3000/vehicles/${vehicleId}`);
             if (response.status === 200) {
-
+                setSnackbar({ open: true, message: 'Vehicle deleted successfully!', severity: 'success' });
                 return true;
             } else {
                 console.error('Failed to delete vehicle with id:', vehicleId);

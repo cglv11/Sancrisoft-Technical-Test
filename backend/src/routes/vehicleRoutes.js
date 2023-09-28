@@ -1,4 +1,5 @@
 const vehicleController = require("../controllers/vehicleController");
+const vehicleMiddleware = require('../middlewares/vehicleMiddleware');
 
 const routes = [
     {
@@ -9,17 +10,20 @@ const routes = [
     {
         method: 'POST',
         url: '/vehicles',
-        handler: vehicleController.addVehicle
+        handler: vehicleController.addVehicle,
+        preHandler: vehicleMiddleware.checkVehicleExists
     },
     {
         method: 'PUT',
         url: '/vehicles/:vehicleId',
-        handler: vehicleController.updateVehicle
+        handler: vehicleController.updateVehicle,
+        preHandler: [vehicleMiddleware.checkVehicleIdExists, vehicleMiddleware.checkVehicleExists]
     },
     {
         method: 'DELETE',
         url: '/vehicles/:vehicleId',
-        handler: vehicleController.deleteVehicle
+        handler: vehicleController.deleteVehicle,
+        preHandler: vehicleMiddleware.checkVehicleIdExists
     }
 ]
 

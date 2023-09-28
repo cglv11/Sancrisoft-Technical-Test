@@ -16,9 +16,9 @@ import Alert from '@material-ui/lab/Alert';
 
 
 const VehiclesTable = () => {
-    const { vehicles, loading, snackbar, setSnackbar, totalPages, getVehicles, deleteVehicle } = useContext(VehicleContext);
+    const { vehicles, loading, snackbar, setSnackbar, totalPages, getVehicles, deleteVehicle, setLoading } = useContext(VehicleContext);
     const [error, setError] = useState();
-    //setLoading(true)
+    // setLoading(true)
     
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedVehicle, setSelectedVehicle] = useState(null);
@@ -187,7 +187,6 @@ const VehiclesTable = () => {
                         {snackbar.message}
                     </Alert>
                 </Snackbar>
-                <Toast open={!!error} message={error} onClose={() => setError('')} />
             </Paper>
             <Pagination 
                 className="paginationBorder"

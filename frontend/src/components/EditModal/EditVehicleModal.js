@@ -28,8 +28,6 @@ function EditVehicleModal({ isOpen, onClose, vehicleData }) {
     const { updateVehicle } = useContext(VehicleContext);
     const [isLoading, setIsLoading] = useState(false);
     const [openSnackbar, setOpenSnackbar] = useState(false);
-    const [snackbarMessage, setSnackbarMessage] = useState('');
-    const [alertSeverity, setAlertSeverity] = useState('success');
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -44,17 +42,13 @@ function EditVehicleModal({ isOpen, onClose, vehicleData }) {
             const updated = await updateVehicle(vehicle);
     
             if (updated) {
-                setAlertSeverity('success');
-                setSnackbarMessage('Vehicle updated successfully!');
                 setOpenSnackbar(true);
                 onClose();
-            } else {
-                throw new Error();
-            }
+                return;
+            } 
+
         } catch (error) {
-            setAlertSeverity('error');
-            setSnackbarMessage('Error updating vehicle. Please try again.');
-            setOpenSnackbar(true);
+            console.log(error)
         }
     
         setIsLoading(false);
@@ -147,9 +141,7 @@ function EditVehicleModal({ isOpen, onClose, vehicleData }) {
                     onClose={() => setOpenSnackbar(false)}
                     anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                 >
-                <Alert onClose={() => setOpenSnackbar(false)} severity={alertSeverity}>
-                    {snackbarMessage}
-                </Alert>
+            
             </Snackbar>
             </div>
         </Modal>
