@@ -1,8 +1,7 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
-import { Card, CardContent, CardMedia, Typography, Container, Grid } from '@mui/material';
-import Button from '@mui/material/Button';
-import CardActions from '@mui/material/CardActions';
+import { useLocation, useNavigate } from 'react-router-dom';
+import IconButton from '@mui/material/IconButton';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import './VehicleDetails.css';
 import { FaShoppingCart, FaRegBookmark, FaStar, FaFireAlt } from 'react-icons/fa';
 
@@ -10,6 +9,7 @@ function VehicleDetails() {
    
     const location = useLocation();
     const vehicle = location.state?.vehicleDetails;
+    const navigate = useNavigate();
 
     if (!vehicle) {
         return <div>Error: Vehicle details not available!</div>;
@@ -21,10 +21,19 @@ function VehicleDetails() {
         }
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
+
+    const goBack = () => {
+        navigate(-1);
+    };
     
     return(
         <>
-        <div className="siteTitle">Vehicle Details {'>'} {vehicle.id} </div>
+        <div className="siteTitle">
+        <IconButton onClick={goBack} style={{ marginRight: '20px' }}>
+            <ArrowBackIcon />
+        </IconButton>
+            Vehicle Details {'>'} {vehicle.id}
+        </div>
         <div className='vehicleList'>
             <div key={vehicle.id} className='vehicleCard'>
                 <FaRegBookmark className={"vehicleCard__wishlist"} />
@@ -39,9 +48,11 @@ function VehicleDetails() {
                     </div>
                     <div className='displayStack__2'>
                         <div className='vehicleRating'>
-                            {[...Array(5)].map((index) => (
-                                <FaStar id={index + 1 } key={index} />
-                            ))}
+                            <FaStar id={5} key={5} />
+                            <FaStar id={5} key={4} />
+                            <FaStar id={5} key={3} />
+                            <FaStar id={5} key={2} />
+                            <FaStar id={5} key={1} />
                         </div>
                         <div className='vehicleTime'>{vehicle.location}</div>
                     </div>

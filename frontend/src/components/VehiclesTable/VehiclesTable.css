@@ -25,9 +25,37 @@
 }
 
 .squareAvatar {
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     border-radius: 4px !important;
-    width: 90px;  
-    height: 90px;
+}
+
+.squareAvatar:hover {
+    transform: scale(1.1);  /* Slight scale on hover */
+    box-shadow: 0px 0px 15px rgba(0,0,0,0.2);  /* Shadow for "lifting" effect */
+}
+
+.iconOverlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0,0,0,0.5);
+    color: white;
+    padding: 10px;
+    visibility: hidden;
+    transition: visibility 0.2s ease-in-out, opacity 0.2s ease-in-out;
+    opacity: 0;
+}
+
+.avatarWrapper {
+    position: relative;
+    cursor: pointer;
+}
+
+.avatarWrapper:hover .iconOverlay {
+    visibility: visible;
+    opacity: 1;
 }
 
 .editButton {

@@ -1,24 +1,30 @@
 import React, { useState, useContext, useEffect } from "react";
-import axios from "axios";
 import { Table, TableBody, TableCell, TableHead, TableRow, Paper, Avatar, TableContainer, IconButton } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import Pagination from '@material-ui/lab/Pagination';
 import { VehicleContext } from "../../context/VehicleContext";
 import EditVehicleModal from "../EditModal/EditVehicleModal";
 import "./VehiclesTable.css";
-import Toast from '../Toast';
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { Snackbar } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
-
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
+import fallbackImage from '../../assets/image.jpeg';
 
 const VehiclesTable = () => {
     const { vehicles, loading, snackbar, setSnackbar, totalPages, getVehicles, deleteVehicle, setLoading } = useContext(VehicleContext);
     const [error, setError] = useState();
     // setLoading(true)
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+    const [vehicleToDelete, setVehicleToDelete] = useState(null);
     
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedVehicle, setSelectedVehicle] = useState(null);
@@ -41,16 +47,31 @@ const VehiclesTable = () => {
         setSelectedVehicle(null);
     };
 
-    const handleDeleteClick = async (vehicleId) => {
-        const success = await deleteVehicle(vehicleId);
+    const handleDeleteClick = (vehicleId) => {
+        setVehicleToDelete(vehicleId);
+        setIsDeleteDialogOpen(true);
+    };
+
+    const handleConfirmDelete = async () => {
+        // perform deletion logic here
+        const success = await deleteVehicle(vehicleToDelete);
         if (success) {
             getVehicles(page);
-            setError('Vehicle deleted successfully!'); 
+            setError('Vehicle deleted successfully!');
         } else {
             setError("We're sorry, something went wrong on our end. Please try again later or contact our support team");
         }
+        // Close the dialog box and reset vehicleToDelete
+        setIsDeleteDialogOpen(false);
+        setVehicleToDelete(null);
     };
 
+    const handleCloseDeleteDialog = () => {
+        // Close the dialog box and reset vehicleToDelete
+        setIsDeleteDialogOpen(false);
+        setVehicleToDelete(null);
+    };
+    
     const handlePageChange = (event, value) => {
         setPage(value);
         navigate(`/vehicles?page=${value}`); 
@@ -71,6 +92,7 @@ const VehiclesTable = () => {
         <div className="flexContainer">
             <Paper className="tablePaper">
                 <TableContainer className="customTableContainer">
+                    
                     <Table>
                         <TableHead>
                             <TableRow>
@@ -131,20 +153,25 @@ const VehiclesTable = () => {
                                                     ) 
                                                     : 
                                                     (
-                                                        <Avatar 
-                                                            className="squareAvatar"
-                                                            alt={`${vehicle.make} ${vehicle.model}`}
-                                                            src={`https://loremflickr.com/320/240/${vehicle.year},${vehicle.make},${vehicle.model}/all`}
-                                                            onError={(e) => {
-                                                                    e.target.onerror = null; 
-                                                                    e.target.src=`https://via.placeholder.com/320x240?text=${vehicle.make}+${vehicle.model}`
-                                                                }}
+                                                        <div 
+                                                            className="avatarWrapper"
                                                             onClick={() => {
                                                                 navigate(`/vehicles/${vehicle.id}`, {
                                                                     state: { vehicleDetails: vehicle }
                                                                 });
                                                             }}
-                                                        />
+                                                        >
+                                                            <Avatar 
+                                                                className="squareAvatar"
+                                                                alt={`${vehicle.make} ${vehicle.model}`}
+                                                                src={`https://loremflickr.com/320/240/${vehicle.year},${vehicle.make}/all`}
+                                                                onError={(e) => {
+                                                                    console.log("Image load error", e.currentTarget);
+                                                                    e.target.onerror = null; 
+                                                                    e.target.src=fallbackImage
+                                                                }}
+                                                            />
+                                                        </div>
                                                     )
                                             }      
                                             </TableCell>
@@ -187,6 +214,27 @@ const VehiclesTable = () => {
                         {snackbar.message}
                     </Alert>
                 </Snackbar>
+                <Dialog
+                    open={isDeleteDialogOpen}
+                    onClose={handleCloseDeleteDialog}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">{"Confirm Deletion"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Are you sure you want to delete this vehicle? This action cannot be undone.
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCloseDeleteDialog} style={{ color: 'black' }} >
+                            Cancel
+                        </Button>
+                        <Button onClick={handleConfirmDelete} color="secondary" autoFocus>
+                            Confirm
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </Paper>
             <Pagination 
                 className="paginationBorder"

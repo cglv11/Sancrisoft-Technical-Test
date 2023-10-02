@@ -16,7 +16,7 @@ const useStyles = makeStyles({
         borderBottomColor: "#2297C5"
       }
     },
-    colorLabel: {     
+    label: {     
         "&.Mui-focused": {
             color: "#2297C5"
           }
@@ -67,8 +67,16 @@ function EditVehicleModal({ isOpen, onClose, vehicleData }) {
                         onChange={handleInputChange}
                         className="yearField"
                         variant="filled"
-                        InputProps={ {classes} }
-                        InputLabelProps={{ className: classes.colorLabel }}
+                        InputProps={{
+                            classes: {
+                              underline: classes.underline,  
+                            }
+                          }}
+                        InputLabelProps={{
+                            classes: {
+                              root: classes.label,  
+                            }
+                          }}
                     />
                     <TextField
                         required
@@ -78,8 +86,16 @@ function EditVehicleModal({ isOpen, onClose, vehicleData }) {
                         onChange={handleInputChange}
                         className="makeField"
                         variant="filled"
-                        InputProps={{ classes }}
-                        InputLabelProps={{ className: classes.colorLabel }}
+                        InputProps={{
+                            classes: {
+                              underline: classes.underline,  
+                            }
+                          }}
+                        InputLabelProps={{
+                            classes: {
+                              root: classes.label,  
+                            }
+                          }}
                     />
                 </div>
                 <div className="fieldsRow">
@@ -91,8 +107,16 @@ function EditVehicleModal({ isOpen, onClose, vehicleData }) {
                         onChange={handleInputChange}
                         className="makeField"
                         variant="filled"
-                        InputProps={{ classes }}
-                        InputLabelProps={{ className: classes.colorLabel }}
+                        InputProps={{
+                            classes: {
+                              underline: classes.underline, 
+                            }
+                          }}
+                        InputLabelProps={{
+                            classes: {
+                              root: classes.label, 
+                            }
+                          }}
                     />
                     <TextField
                         required
@@ -102,8 +126,16 @@ function EditVehicleModal({ isOpen, onClose, vehicleData }) {
                         onChange={handleInputChange}
                         className="makeField"
                         variant="filled"
-                        InputProps={{ classes }}
-                        InputLabelProps={{ className: classes.colorLabel }}
+                        InputProps={{
+                            classes: {
+                              underline: classes.underline,  
+                            }
+                          }}
+                        InputLabelProps={{
+                            classes: {
+                              root: classes.label, 
+                            }
+                          }}
                     />
 
                 </div>
